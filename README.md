@@ -86,8 +86,43 @@
 			<version>1.8.1</version>
 		</dependency>
 ```
+### 2. H2 테스트DB 설정
+#### 2.1 pom.xml에 H2 Dependency 추가
+```xml
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+```
+#### 2.2 application-test.yml 설정
+> 메모리 모드<br>위치 : test/resources/application-test.yml
+```yaml
+spring:
+  datasource:
+    username: sa
+    password:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
 
-### 2. H2 설정
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type.descriptor.sql.BasicBinder: TRACE
+```
+#### 2.3 test코드에 application-test.yml 사용 설정
+```java
+@ActiveProfiles("test")
+// Test의 @Transactional은 모두 Rollback하게 한다. @Commit을 이용할 수 있다.
+@Transactional
+class HelloTest {
+}
+```
+
+### 3. H2 운영DB 설정
+> 파일 모드
 #### 1.1 H2 Download
 > https://h2database.com/html/main.html
 #### 1.2 파일생성 및 H2 실행
