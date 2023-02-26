@@ -137,3 +137,5 @@ $ bin/h2.sh # Web Browser 자동실행
 > 처음 개발할 때는 Test 결과확인을 위해 file/TCP 모드를 사용하고, 운영중 Test는 Memory 모드를 사용한다
 * 저장한 설정 : Generic H2 (Embedded)
 * JDBC URL : jdbc:h2:tcp://localhost/~/workspace/h2/data/querydsl
+#### 2.4 스키마 / 데이터 자동생성
+> resources 아래에 schema.sql, data.sql 를 생성해 넣는다.

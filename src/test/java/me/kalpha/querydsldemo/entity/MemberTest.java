@@ -18,6 +18,7 @@ import javax.persistence.PersistenceUnit;
 import java.util.List;
 
 import static com.querydsl.jpa.JPAExpressions.select;
+import static me.kalpha.querydsldemo.entity.QMember.member;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -357,6 +358,112 @@ class MemberTest {
 
         for (Tuple t: fetch) {
             System.out.println(t);
+        }
+    }
+
+    /**
+     * 데이터 :
+     * Member member1 = new Member("member1", 10, team1);
+     */
+    @DisplayName("bulk update 처리 테스트 : No flush")
+    @Test
+    public void bulkUpdateNoflushTest() {
+        // Persistance Context를 무시하고 DB에 SQL을 실행한다.
+        // 따라서 Persistance Context와 DB의 값이 달라진다.
+        long count = queryFactory
+                .update(member)
+                .set(member.username, "비회원")
+                .where(member.age.lt(28))
+                .execute();
+
+        // Persistance Context는 변경되지 않아서 DB와 달라지 상태이다.
+
+        List<Member> result = queryFactory.selectFrom(member)
+                .where(member.age.lt(28))
+                .fetch();
+
+        for (Member member1 : result) {
+            System.out.println("member1 = " + member1);
+        }
+        assertEquals(result.get(0).getUsername(), "member1");
+    }
+
+    /**
+     * 데이터 :
+     * Member member1 = new Member("member1", 10, team1);
+     */
+    @DisplayName("bulk update 처리 테스트 : Flush")
+    @Test
+    public void bulkUpdateFlushTest() {
+        // Persistance Context를 무시하고 DB에 SQL을 실행한다.
+        // 따라서 Persistance Context와 DB의 값이 달라진다.
+        long count = queryFactory
+                .update(member)
+                .set(member.username, "비회원")
+                .where(member.age.lt(28))
+                .execute();
+
+        // Persistance Context를 삭제한다.
+        em.flush();
+        em.clear();
+
+        List<Member> result = queryFactory.selectFrom(member)
+                .where(member.age.lt(28))
+                .fetch();
+
+        for (Member member1 : result) {
+            System.out.println("member1 = " + member1);
+        }
+        assertEquals(result.get(0).getUsername(), "비회원");
+    }
+    @DisplayName("기존값 기준으로 Update 테스트")
+    @Test
+    public void updateAddVerify() {
+        long count = queryFactory
+                .update(member)
+                .set(member.age, member.age.add(-1))
+                .where(member.age.eq(10))
+                .execute();
+//        em.flush();
+//        em.clear();
+
+        List<Member> result = queryFactory.select(member)
+                .from(member)
+                .where(member.age.eq(9))
+                .fetch();
+
+        for (Member member1 : result) {
+            System.out.println("member1 = " + member1);
+        }
+    }
+
+    /**
+     * 시용자 Function을 사용하는 경우 :
+     * H2Dialect를 상속해서, 새로운 H2Dialect를 생성한 후 application.yml에 해당 H2Dialect를 등록한다.
+     * 상속된 H2Dialect에는 사용하려는 Function이 registerFunction되어 있어야 한다.
+     */
+    @DisplayName("SQL Funtion 실행 검증")
+    @Test
+    public void sqlStringFunctionVerify() {
+        List<String> result = queryFactory
+                .select(Expressions.stringTemplate(
+                        "function('ucase', {0})",
+                        member.username))
+                .from(member)
+                .fetch();
+        for (String s : result) {
+            System.out.println("s = " + s);
+        }
+    }
+    @DisplayName("SQL Funtion 실행 검증 (ANSI Standard)")
+    @Test
+    public void sqlAnsiFunctionVerify() {
+        List<String> result = queryFactory
+                .select(member.username.upper())
+                .from(member)
+                .fetch();
+        for (String s : result) {
+            System.out.println("s = " + s);
         }
     }
     @BeforeEach
