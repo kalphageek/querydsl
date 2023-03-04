@@ -138,4 +138,22 @@ $ bin/h2.sh # Web Browser 자동실행
 * 저장한 설정 : Generic H2 (Embedded)
 * JDBC URL : jdbc:h2:tcp://localhost/~/workspace/h2/data/querydsl
 #### 2.4 스키마 / 데이터 자동생성
-> resources 아래에 schema.sql, data.sql 를 생성해 넣는다.
+> resources 아래에 schema.sql, data.sql 를 생성해 넣는다.조
+
+### 4. 기타
+#### 4.1 QueryProjection
+> Dto를 이용해 Query를 바로 실행할 수 있도록 해준다. 
+* 방법 : Dto를 생성하고 생성자에 @QueryProjection을 붙인다.
+* Dto 코드 : MemberDto2.class
+* Test 코드 : MemberDto2Test.queryDslProjectionDto()
+#### 4.2 동적 Query 생성 
+> Where Param 를 사용하는 방법 과 BooleanBuilder를 사용하는 방법이 있다. 그 중 Where Param 를 사용하도록 한다.
+* Where Param 장점
+  * Return 값이 다른 Query에 재사용 할 수 있다
+  * 조건 컬럼들을 다양하게 조합하고, 변형 할 수 있다.
+* Test 코드 : MemberSeviceTest.searchMember1()
+#### 4.3 Static Import
+> member는 QMember.member를 사전 변수선언 없이 사용할 수 있다. hasText는 null과 empty를 모두 체크하며 springframework에서 제공한다.
+* QMember.member -> member
+* StringUtils.hasText -> hasText
+* Test 코드 : MemberSeviceTest.class

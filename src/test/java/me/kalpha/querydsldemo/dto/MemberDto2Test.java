@@ -45,6 +45,8 @@ class MemberDto2Test {
         for (MemberDto2 result : results) {
             System.out.println("result = " + result);
         }
+
+        assertEquals(results.size(), 7);
     }
     @BeforeEach
     private void samples() {

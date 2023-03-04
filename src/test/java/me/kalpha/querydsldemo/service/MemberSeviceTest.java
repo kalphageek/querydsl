@@ -17,15 +17,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 import static me.kalpha.querydsldemo.entity.QMember.member;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.util.StringUtils.hasText;
 
 /**
  * QMember.member -> member (static import)
+ * StringUtils.hasText -> hasText (static import)
  */
 @SpringBootTest
 @ActiveProfiles("test")
@@ -39,10 +42,32 @@ public class MemberSeviceTest {
     @Test
     public void booleanBuilderTest() {
         String usernameParam = "member1";
+    EntityManager em;
         Integer ageParam = null;
 
         List<Member> results = searchMember1(usernameParam, ageParam);
         assertEquals(results.get(0).getUsername(), usernameParam);
+    }
+
+    /**
+     * booleanBuilderTest 용
+     * @param usernameParam
+     * @param ageParam
+     * @return
+     */
+    private List<Member> searchMember1(String usernameParam, Integer ageParam) {
+        BooleanBuilder builder = new BooleanBuilder();
+        // StringUtils.hasText는 null과 empty를 체크한다
+        if (hasText(usernameParam)) {
+            builder.and(member.username.eq(usernameParam));
+        }
+        if (ageParam != null) {
+            builder.and(member.age.eq(ageParam));
+        }
+
+        return queryFactory.selectFrom(member)
+                .where(builder)
+                .fetch();
     }
 
     @DisplayName("Where Param Dynamic Query 생성 테스트")
@@ -56,6 +81,7 @@ public class MemberSeviceTest {
     }
 
     /**
+     * whereParamTest 용
      * Main 코드가 깔끔하고, 조건의 자유로운 조합이 가능해서 이 방식이 선호된다
      * 재사용도 가능하다.
      * 코드의 가독성이 높아진다
@@ -75,27 +101,13 @@ public class MemberSeviceTest {
     }
 
     private BooleanExpression usernameEq(String usernameParam) {
-        return usernameParam == null ? null: member.username.eq(usernameParam);
+        return hasText(usernameParam) ? member.username.eq(usernameParam) : null ;
     }
 
     private BooleanExpression ageEq(Integer ageParam) {
         return ageParam == null ? null : member.age.eq(ageParam);
     }
 
-
-    private List<Member> searchMember1(String usernameParam, Integer ageParam) {
-        BooleanBuilder builder = new BooleanBuilder();
-        if (usernameParam != null) {
-            builder.and(member.username.eq(usernameParam));
-        }
-        if (ageParam != null) {
-            builder.and(member.age.eq(ageParam));
-        }
-
-        return queryFactory.selectFrom(member)
-                .where(builder)
-                .fetch();
-    }
 
     @BeforeEach
     private void samples() {

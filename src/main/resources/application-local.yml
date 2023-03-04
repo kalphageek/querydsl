@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
@@ -15,4 +15,4 @@ spring:
 
 # SQL? ??? display ??.
 logging.level:
-  org.hibernate.SQL: info
+  org.hibernate.SQL: trace
