@@ -1,13 +1,11 @@
 package me.kalpha.querydsldemo.repository;
 
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import me.kalpha.querydsldemo.dto.MemberSearchCondition;
 import me.kalpha.querydsldemo.dto.MemberTeamDto;
 import me.kalpha.querydsldemo.dto.QMemberTeamDto;
-import me.kalpha.querydsldemo.entity.QMember;
-import me.kalpha.querydsldemo.entity.QTeam;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -17,21 +15,18 @@ import static me.kalpha.querydsldemo.entity.QTeam.team;
 import static org.springframework.util.StringUtils.hasText;
 
 /**
- * MemberRepositoryCustomImpl로 하면 안된다. 규칙이다
+ * Query 전용 Repository
+ * Entity 없이 복합 Query 전용으로 사용할 경우에는 MemberRepository, MemberRepositoryCustom, MemberRepositoryImpl 없이
+ * QueryRepository를 클래스로 직접 생성해서 사용할 수 있다.
  */
-public class MemberRepositoryImpl implements MemberRepositoryCustom {
-
+@Repository
+public class QueryRepository {
     private final JPAQueryFactory queryFactory;
 
-//    public MemberRepositoryImpl(JPAQueryFactory queryFactory) {
-//        this.queryFactory = queryFactory;
-//    }
-
-    public MemberRepositoryImpl(EntityManager em) {
+    public QueryRepository(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    @Override
     public List<MemberTeamDto> search(MemberSearchCondition condition) {
         return queryFactory
                 .select(new QMemberTeamDto(
@@ -60,7 +55,6 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     private BooleanExpression ageGoe(Integer ageParam) {
         return ageParam == null ? null : member.age.goe(ageParam);
     }
-
     private BooleanExpression ageLoe(Integer ageParam) {
         return ageParam == null ? null : member.age.loe(ageParam);
     }

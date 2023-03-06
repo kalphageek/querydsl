@@ -15,34 +15,19 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
-class MemberRepositoryTest {
+class QueryRepositoryTest {
+
     @Autowired
     EntityManager em;
     JPAQueryFactory queryFactory;
     @Autowired
-    MemberRepository memberRepository;
+    QueryRepository queryRepository;
 
-    @DisplayName("MemberRepository Basic 테스트")
-    @Test
-    public void basicTest() {
-        Member member = new Member("member1", 10);
-        memberRepository.save(member);
-
-        Member findMember = memberRepository.findById(member.getId()).get();
-        assertEquals(findMember.getId(), member.getId());
-
-        List<Member> result1 = memberRepository.findAll();
-        assertThat(result1).extracting("id").containsExactly(member.getId());
-
-        List<Member> result2 = memberRepository.findByUsername(member.getUsername());
-        assertThat(result2).extracting("id").containsExactly(member.getId());
-    }
-
-    @DisplayName("Custom MemberRepostory with SearchCondition 테스트")
+    @DisplayName("QueryRepostory with SearchCondition 테스트")
     @Test
     public void searchTest() {
         Team teamA = new Team("teamA");
@@ -64,9 +49,8 @@ class MemberRepositoryTest {
         condition.setAgeLoe(40);
         condition.setTeamName("teamB");
 
-        List<MemberTeamDto> result = memberRepository.search(condition);
+        List<MemberTeamDto> result = queryRepository.search(condition);
 
         assertThat(result).extracting("username").containsExactly("member4");
     }
-
 }

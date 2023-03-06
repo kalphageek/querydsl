@@ -31,7 +31,6 @@ import static org.springframework.util.StringUtils.hasText;
  * StringUtils.hasText -> hasText (static import)
  */
 @SpringBootTest
-@ActiveProfiles("test")
 @Transactional
 public class MemberSeviceTest {
     @Autowired

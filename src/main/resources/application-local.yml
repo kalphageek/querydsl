@@ -1,10 +1,12 @@
+server:
+  port: 8081
+
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/workspace/h2/data/querydsl
+    url: jdbc:h2:tcp://localhost/~/workspace/h2/data/local
     username: sa
     password:
     driver-class-name: org.h2.Driver
-
   jpa:
     hibernate:
       ddl-auto: create
@@ -13,6 +15,5 @@ spring:
         format_sql: true
     database-platform: org.hibernate.dialect.H2Dialect
 
-# SQL? ??? display ??.
 logging.level:
   org.hibernate.SQL: trace

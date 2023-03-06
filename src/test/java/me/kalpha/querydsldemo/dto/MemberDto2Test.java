@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * Projection을 이용해 Querydsl Dto를 생성하는 예제
  */
 @SpringBootTest
-@ActiveProfiles("test")
 @Transactional
 class MemberDto2Test {
 

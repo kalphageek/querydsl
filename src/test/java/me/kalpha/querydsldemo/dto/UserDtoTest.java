@@ -25,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * 다양한 컬럼을 추가한 Dto를 Querydsl에서 생성하는 예제
  */
 @SpringBootTest
-@ActiveProfiles("test")
 @Transactional
 class UserDtoTest {
 

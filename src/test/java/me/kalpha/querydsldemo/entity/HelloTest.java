@@ -12,7 +12,6 @@ import javax.persistence.EntityManager;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@ActiveProfiles("test")
 // Test의 @Transactional은 모두 Rollback하게 한다. @Commit을 이용할 수 있다.
 @Transactional
 class HelloTest {
