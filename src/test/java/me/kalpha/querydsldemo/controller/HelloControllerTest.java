@@ -14,8 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class HelloControllerTest {
     @Autowired
-    HelloController helloController;
-    @Autowired
     MockMvc mockMvc;
 
     @Test
