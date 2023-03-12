@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +34,8 @@ class MemberControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    @DisplayName("Get /v1/members Controller Test")
+    @Commit
+    @DisplayName("Get /v1/members Test")
     @Test
     public void findSearchTest() throws Exception {
         MemberSearchCondition condition = new MemberSearchCondition();
@@ -49,17 +51,17 @@ class MemberControllerTest {
     }
 
 
-    @DisplayName("Gett /v1/memver Controller Test")
+    @DisplayName("Get /v1/member Test")
     @Test
     public void findByIdTest() throws Exception {
-        Long memberId = 1l;
+        Long memberId = 4l;
         mockMvc.perform(get("/v1/member/{memberId}", memberId))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @BeforeEach
-    private void ininData() {
+    private void initData() {
 
         Team teamA = new Team("teamA");
         Team teamB = new Team("teamB");
@@ -74,10 +76,5 @@ class MemberControllerTest {
         em.persist(member2);
         em.persist(member3);
         em.persist(member4);
-
-        MemberSearchCondition condition = new MemberSearchCondition();
-        condition.setAgeGoe(35);
-        condition.setAgeLoe(40);
-        condition.setTeamName("teamB");
     }
 }

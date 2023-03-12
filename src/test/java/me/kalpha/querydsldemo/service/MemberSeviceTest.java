@@ -41,7 +41,6 @@ public class MemberSeviceTest {
     @Test
     public void booleanBuilderTest() {
         String usernameParam = "member1";
-    EntityManager em;
         Integer ageParam = null;
 
         List<Member> results = searchMember1(usernameParam, ageParam);
