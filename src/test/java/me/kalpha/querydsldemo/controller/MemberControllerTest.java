@@ -23,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
+@Commit
 @SpringBootTest
 @AutoConfigureMockMvc
 class MemberControllerTest {
@@ -34,7 +35,6 @@ class MemberControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    @Commit
     @DisplayName("Get /v1/members Test")
     @Test
     public void findSearchTest() throws Exception {

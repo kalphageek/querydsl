@@ -8,6 +8,9 @@ import me.kalpha.querydsldemo.dto.MemberTeamDto;
 import me.kalpha.querydsldemo.dto.QMemberTeamDto;
 import me.kalpha.querydsldemo.entity.QMember;
 import me.kalpha.querydsldemo.entity.QTeam;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityManager;
 import java.util.List;
