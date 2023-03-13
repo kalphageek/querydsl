@@ -5,6 +5,9 @@ import me.kalpha.querydsldemo.dto.MemberSearchCondition;
 import me.kalpha.querydsldemo.dto.MemberTeamDto;
 import me.kalpha.querydsldemo.entity.Member;
 import me.kalpha.querydsldemo.repository.MemberRepository;
+import me.kalpha.querydsldemo.repository.QueryRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,10 +19,21 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+    private final QueryRepository queryRepository;
 
     @Override
     public List<MemberTeamDto> search(MemberSearchCondition condition) {
         return memberRepository.search(condition);
+    }
+
+    @Override
+    public Page<MemberTeamDto> searchPageSimple(MemberSearchCondition condition, Pageable pageable) {
+        return queryRepository.searchSimplePage(condition, pageable);
+    }
+
+    @Override
+    public Page<MemberTeamDto> searchPageComplex(MemberSearchCondition condition, Pageable pageable) {
+        return queryRepository.searchComplexPage(condition, pageable);
     }
 
     @Override

@@ -51,6 +51,18 @@ class MemberControllerTest {
     }
 
 
+    @DisplayName("Get /v2/members Test")
+    @Test
+    public void findSearchSimpleTest() throws Exception {
+        MemberSearchCondition condition = new MemberSearchCondition();
+        condition.setTeamName("teamA");
+
+        mockMvc.perform(get("/v2/members?page=0&size=2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(condition)))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
     @DisplayName("Get /v1/member Test")
     @Test
     public void findByIdTest() throws Exception {
