@@ -6,7 +6,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import me.kalpha.querydsldemo.dto.MemberSearchCondition;
 import me.kalpha.querydsldemo.dto.MemberTeamDto;
 import me.kalpha.querydsldemo.dto.QMemberTeamDto;
-import me.kalpha.querydsldemo.entity.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -121,6 +120,7 @@ public class QueryRepository {
     private BooleanExpression ageGoe(Integer ageParam) {
         return ageParam == null ? null : member.age.goe(ageParam);
     }
+
     private BooleanExpression ageLoe(Integer ageParam) {
         return ageParam == null ? null : member.age.loe(ageParam);
     }
