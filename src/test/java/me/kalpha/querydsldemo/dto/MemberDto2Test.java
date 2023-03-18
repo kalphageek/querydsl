@@ -4,19 +4,16 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import me.kalpha.querydsldemo.entity.Member;
 import me.kalpha.querydsldemo.entity.QMember;
 import me.kalpha.querydsldemo.entity.Team;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Projection을 이용해 Querydsl Dto를 생성하는 예제
@@ -36,6 +33,7 @@ class MemberDto2Test {
     @DisplayName("queryDsl Proejection을 이용한 Dto 사용")
     @Test
     public void queryDslProjectionDto() {
+        samples();
         QMember qMember = QMember.member;
         List<MemberDto2> results = queryFactory.select(new QMemberDto2(qMember.username, qMember.age))
                 .from(qMember)
@@ -47,7 +45,6 @@ class MemberDto2Test {
 
         assertEquals(results.size(), 7);
     }
-    @BeforeEach
     private void samples() {
         queryFactory = new JPAQueryFactory(em);
 

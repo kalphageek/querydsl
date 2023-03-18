@@ -26,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * Querydsl의 기본적인 사용법 예제
  */
 @SpringBootTest
-@ActiveProfiles("test")
 @Transactional
 class MemberDtoTest {
     @Autowired

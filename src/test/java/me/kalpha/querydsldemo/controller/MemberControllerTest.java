@@ -4,26 +4,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import me.kalpha.querydsldemo.dto.MemberSearchCondition;
 import me.kalpha.querydsldemo.entity.Member;
 import me.kalpha.querydsldemo.entity.Team;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.Commit;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
-@Commit
 @SpringBootTest
 @AutoConfigureMockMvc
 class MemberControllerTest {
@@ -38,6 +35,7 @@ class MemberControllerTest {
     @DisplayName("Get /v1/members Test")
     @Test
     public void findSearchTest() throws Exception {
+        initData();
         MemberSearchCondition condition = new MemberSearchCondition();
         condition.setAgeGoe(35);
         condition.setAgeLoe(40);
@@ -54,6 +52,7 @@ class MemberControllerTest {
     @DisplayName("Get /v2/members Test")
     @Test
     public void findSearchSimpleTest() throws Exception {
+        initData();
         MemberSearchCondition condition = new MemberSearchCondition();
         condition.setTeamName("teamA");
 
@@ -66,13 +65,13 @@ class MemberControllerTest {
     @DisplayName("Get /v1/member Test")
     @Test
     public void findByIdTest() throws Exception {
+        initData();
         Long memberId = 4l;
         mockMvc.perform(get("/v1/member/{memberId}", memberId))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
-    @BeforeEach
     private void initData() {
 
         Team teamA = new Team("teamA");
